@@ -1,0 +1,8 @@
+name = "onslaught2342-cdn"
+pages_build_output_dir = "dist"
+
+[upload]
+exclude = [
+  "heavy-assets/**",
+  "assets/wallpapers/**"
+]
