@@ -3,12 +3,21 @@ import path from "path";
 
 const rootDir = process.cwd();
 const distDir = path.join(rootDir, "dist");
-const MAX_FILE_SIZE = 100 * 1024 * 1024; // 25 MB in bytes
+const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
+
+const EXCLUDE_FILES = [
+	".gitignore",
+	".gitattributes",
+	".prettierignore",
+	"README.md",
+	"LICENSE",
+	"wrangler.toml",
+];
 
 console.log("🧹 Cleaning dist folder...");
 fs.emptyDirSync(distDir);
 
-console.log("📦 Copying files (structure preserved, <=25MB)...");
+console.log("📦 Copying files (structure preserved, <=100MB)...");
 
 function copyWithStructure(srcDir, destDir) {
 	for (const item of fs.readdirSync(srcDir)) {
@@ -17,7 +26,23 @@ function copyWithStructure(srcDir, destDir) {
 		const stats = fs.statSync(srcPath);
 
 		// Skip unnecessary folders
-		if (["node_modules", "dist", ".git", ".github", ".qodo"].includes(item)) {
+		if (
+			[
+				"node_modules",
+				"dist",
+				".git",
+				".github",
+				".qodo",
+				"build-scripts",
+			].includes(item)
+		) {
+			continue;
+		}
+
+		// Skip excluded individual files
+		const relativePath = path.relative(rootDir, srcPath).replace(/\\/g, "/");
+		if (EXCLUDE_FILES.includes(relativePath)) {
+			console.log(`🚫 Skipped excluded file: ${relativePath}`);
 			continue;
 		}
 
@@ -28,7 +53,7 @@ function copyWithStructure(srcDir, destDir) {
 			// Skip large files
 			if (stats.size > MAX_FILE_SIZE) {
 				console.log(
-					`🚫 Skipped large file: ${srcPath} (${(
+					`🚫 Skipped large file: ${relativePath} (${(
 						stats.size /
 						1024 /
 						1024
@@ -45,5 +70,5 @@ function copyWithStructure(srcDir, destDir) {
 copyWithStructure(rootDir, distDir);
 
 console.log(
-	"✅ Cloudflare-like build ready in /dist (structure preserved, assets + wallpapers <=25MB)."
+	"✅ Github build ready in /dist (structure preserved, assets + wallpapers <=100MB)."
 );

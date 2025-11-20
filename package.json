@@ -1,10 +1,11 @@
 {
-	"type": "module",
-	"scripts": {
-		"build-github": "node build-scripts/prepare-github.js",
-		"build-cloudflare": "node build-scripts/prepare-cloudflare.js"
-	},
-	"devDependencies": {
-		"fs-extra": "^11.3.2"
-	}
+  "type": "module",
+  "scripts": {
+    "build-github": "node build-scripts/prepare-github.js",
+    "build-cloudflare": "node build-scripts/prepare-cloudflare.js",
+    "gen-redirect": "find . -type f | sed 's|^\\./|/assets/|; s| |_|g' | awk '{print $0 \" \"$0 \" 200\"}' > ../_redirects"
+  },
+  "devDependencies": {
+    "fs-extra": "^11.3.2"
+  }
 }
