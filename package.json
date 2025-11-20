@@ -1,0 +1,10 @@
+{
+	"type": "module",
+	"scripts": {
+		"build-github": "node build-scripts/prepare-github.js",
+		"build-cloudflare": "node build-scripts/prepare-cloudflare.js"
+	},
+	"devDependencies": {
+		"fs-extra": "^11.3.2"
+	}
+}
