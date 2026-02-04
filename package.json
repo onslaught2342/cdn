@@ -1,8 +1,9 @@
 {
   "type": "module",
   "scripts": {
-    "build-github": "node build-scripts/prepare-github.js",
-    "build-cloudflare": "node build-scripts/prepare-cloudflare.js",
+    "build-list" : "node build-scripts/generate-list.js",
+    "build-github": "node build-scripts/prepare-github.js && node build-scripts/generate-list.js",
+    "build-cloudflare": "node build-scripts/prepare-cloudflare.js && node build-scripts/generate-list.js",
     "gen-redirect": "find . -type f | sed 's|^\\./|/assets/|; s| |_|g' | awk '{print $0 \" \"$0 \" 200\"}' > ../_redirects"
   },
   "devDependencies": {
